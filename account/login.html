@@ -1,56 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Butter Login</title>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <link rel="icon" href="Logo.png" type="image/png" />
-  <link rel="stylesheet" href="style.css" />
+  <title>Login</title>
+<link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
-  <div class="login-container">
 
-    <!-- Left form -->
-    <div class="login-form">
-      <h2>Butter Account.</h2>
-      <p>Don’t have an account? <a href="./create/register.html">Sign up</a></p>
+<h2>Login</h2>
 
-      <!-- ❌ no action / method -->
-      <div class="input-group">
-        <label>Email</label>
-        <input type="email" id="email" placeholder="eg, mark@gmail.com" required>
-      </div>
+<input type="email" id="email" placeholder="Enter Email">
+<input type="password" id="password" placeholder="Enter Password">
+<button id="loginBtn">Login</button>
 
-      <div class="input-group">
-        <label>Password</label>
-        <input type="password" id="password" placeholder="••••••••" required>
-      </div>
+<p>No account? <a href="register.html">Register</a></p>
 
-      <div class="options">
-        <label><input type="checkbox"> Remember me</label>
-        <a href="./search/recover.html">Forgot password?</a>
-      </div>
+<script type="module">
 
-      <button onclick="login()">Sign In</button>
+import { auth } from "./firebase.js";
+import { signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-      <div class="social-login">
-        <button onclick="googleLogin()" aria-label="Login with Google">
-          <i class="fab fa-google"></i>
-        </button>
-      </div>
-    </div>
+const loginBtn = document.getElementById("loginBtn");
 
-    <!-- Right image -->
-    <div class="login-image">
-      <img src="Logo.png" alt="Login Avatar">
-    </div>
+loginBtn.addEventListener("click", () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-  </div>
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    alert("Login Successful!");
+    window.location.href = "../screens/market.html";
+  })
+    .catch((error) => {
+      alert(error.message);
+    });
+});
 
-  <!-- Firebase Auth Logic -->
-  <script src="auth.js" type="module"></script>
+</script>
+
 </body>
 </html>
