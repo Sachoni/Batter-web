@@ -1,0 +1,22 @@
+body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('account/favicon_io/android-chrome-512x512.png') no-repeat center center/cover;
+      position: relative;
+    }
+
+    .container {
+      background: rgba(20, 20, 20, 0.9);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      width: 90%;
+      max-width: 950px;
+      position: relative;
+      z-index: 1;
+      color: #f5c542;
+      height: 250px;
+    }

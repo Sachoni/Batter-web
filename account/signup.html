@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signup</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="progress">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div id="step1" class="step active">
+    <h2>Create Account</h2>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="createAccount()">Next</button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div id="step2" class="step">
+    <h2>Username</h2>
+    <input id="username" placeholder="Username">
+    <p id="usernameStatus"></p>
+    <button onclick="checkUsername()">Next</button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div id="step3" class="step">
+    <h2>Profile Picture</h2>
+    <input type="file" id="profilePic">
+    <button onclick="uploadImage()">Next</button>
+  </div>
+
+  <!-- STEP 4 -->
+  <div id="step4" class="step">
+    <h2>About</h2>
+    <input id="bio" placeholder="Bio">
+    <input id="location" placeholder="Location">
+    <button onclick="finishSignup()">Finish</button>
+  </div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+
+<script src="firebase.js"></script>
+<script src="signup.js"></script>
+
+</body>
+</html>

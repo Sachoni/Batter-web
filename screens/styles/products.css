@@ -109,6 +109,101 @@ nav a:hover {
 nav a:hover::after {
     width: 100%;
 }
+/*#####################UPDATE################*/
+/*#####################UPDATE################*/
+/*#####################UPDATE################*/
+/*#####################UPDATE################*/
+ .container {
+        display: flex;
+        gap: 20px;
+    }
+
+    .card {
+        background: #f5c542;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: 0.3s;
+        color:#000;
+        width: 170px;
+        height: 220px;
+        padding-right: 12px;
+        padding-left: 12px;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .preview {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        background: #ddd;
+    }
+
+    .file-icon {
+        font-size: 50px;
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .file-name {
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .file-info {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 15px;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    button {
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        color: #fff;
+        font-size: 13px;
+        width: 12px;
+    }
+
+    .download { 
+        background: #28a745;
+        width: 90px;
+        border-radius: 12px;
+     }
+    .share {
+         background: #007bff;
+         padding-right: 50px;
+         border-radius: 12px;
+    }
+    .card1{
+    background-color: #232323;
+    height: 100px;
+    position: relative;
+    top:250px;
+}
+.card1{
+    background-color: #232323;
+    height: 100px;
+    position: relative;
+    top:250px;
+}
+/*#####################UPDATE################*/
+/*#####################UPDATE################*/
+/*#####################UPDATE################*/
 
 
 /* GLOBAL RESPONSIVE RESET */

@@ -1,0 +1,32 @@
+<div id="step1" class="step">
+  <h2>Create Account</h2>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="createAccount()">Next</button>
+</div>
+
+<div id="step2" class="step" style="display:none;">
+  <h2>Username</h2>
+  <input id="username" placeholder="Username">
+  <button onclick="nextStep(3)">Next</button>
+</div>
+
+<div id="step3" class="step" style="display:none;">
+  <h2>About You</h2>
+  <input id="bio" placeholder="Bio">
+  <input id="location" placeholder="Location">
+  <button onclick="nextStep(4)">Next</button>
+</div>
+
+<div id="step4" class="step" style="display:none;">
+  <h2>Personal Info</h2>
+  <input id="age" placeholder="Age">
+  <select id="gender">
+    <option>Male</option>
+    <option>Female</option>
+  </select>
+  <button onclick="finishSignup()">Finish</button>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
