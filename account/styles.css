@@ -1,43 +1,112 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
 body {
-  font-family: Arial;
-  background: #f5f5f5;
-  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  background: #000;
+  color: #fff;
 }
 
-.container {
-  max-width: 400px;
-  margin: auto;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
+/* FULL SCREEN APP CONTAINER */
+.phone {
+  width: 100%;
+  min-height: 100dvh; /* full screen (modern fix) */
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-input, select {
-  width: 90%;
-  padding: 10px;
-  margin: 10px;
+/* OPTIONAL: keep it nice on big screens */
+@media (min-width: 600px) {
+  .phone {
+    max-width: 420px;
+    margin: auto;
+  }
 }
 
+/* TITLE */
+h1 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+h1 span {
+  color: #f5b400;
+}
+
+p {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 25px;
+}
+
+/* INPUT GROUP */
+.input-group {
+  background: #111;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  padding: 14px;
+}
+
+input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  font-size: 15px;
+}
+
+/* BUTTON */
 button {
-  padding: 10px 20px;
+  width: 100%;
+  padding: 15px;
+  background: #f5b400;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  margin-top: 10px;
   cursor: pointer;
+  transition: 0.3s;
+  font-size: 15px;
 }
 
-.step {
-  display: none;
+button:hover {
+  background: #ffcc33;
 }
 
-.active {
-  display: block;
+/* FORGOT PASSWORD */
+.forgot {
+  text-align: right;
+  font-size: 12px;
+  margin-bottom: 15px;
+  color: #aaa;
 }
 
-.progress {
-  height: 5px;
-  background: #ddd;
+/* DIVIDER */
+.divider {
+  text-align: center;
+  margin: 25px 0;
+  font-size: 12px;
+  color: #777;
 }
 
-.progress-bar {
-  height: 5px;
-  background: green;
-  width: 25%;
+/* FOOT TEXT */
+.footer-text {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.footer-text a {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
 }
