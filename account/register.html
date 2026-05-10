@@ -13,14 +13,6 @@
   <p>Start your journey with us</p>
 
   <div class="input-group">
-    <input type="text" id="fullname" placeholder="Full Name">
-  </div>
-
-  <div class="input-group">
-    <input type="text" id="username" placeholder="username">
-  </div>
-
-  <div class="input-group">
     <input type="email" id="email" placeholder="Email">
   </div>
 
@@ -39,17 +31,24 @@
 <script type="module">
 
 import { auth, db } from "./firebase.js";
-import { createUserWithEmailAndPassword } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+import { 
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
 import { doc, setDoc } 
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+
+// -------------------------
+// EMAIL SIGNUP
+// -------------------------
 const registerBtn = document.getElementById("registerBtn");
 
 registerBtn.addEventListener("click", async () => {
 
-  const fullname = document.getElementById("fullname").value;
-  const course = document.getElementById("username").value;
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
@@ -57,10 +56,9 @@ registerBtn.addEventListener("click", async () => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // ✅ Save extra user data to Firestore
     await setDoc(doc(db, "users", user.uid), {
-      fullname,
-      username,
+      //fullname,
+     // username,
       email,
       role: "student",
       createdAt: new Date()
@@ -74,6 +72,35 @@ registerBtn.addEventListener("click", async () => {
   }
 
 });
+
+
+// -------------------------
+// GOOGLE SIGN-IN
+// -------------------------
+//window.googleSignIn = async function () {
+ // const provider = new GoogleAuthProvider();
+
+ // try {
+  //  const result = await signInWithPopup(auth, provider);
+  //  const user = result.user;
+
+   // await setDoc(doc(db, "users", user.uid), {
+    //  fullname: user.displayName || "",
+     // username: user.displayName || "",
+     // email: user.email,
+     // photo: user.photoURL || "",
+     // role: "student",
+     // createdAt: new Date()
+    //});
+
+   // alert("Google Sign-In Successful!");
+   // window.location.href = "login.html";
+
+ // } catch (error) {
+   // alert(error.message);
+ // }
+//};
+
 </script>
 
 </body>
