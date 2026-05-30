@@ -1,148 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TechNest Store</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batter</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="styles/market.css" />
+<link rel="stylesheet" href="styles/market.css">
 
-  <!-- Icons -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  />
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
 </head>
 
 <body>
 
-  <!-- ================= NAVBAR ================= -->
+<!-- HEADER -->
+<header class="header">
+<div class="logo">Batter</div>
 
-  <header class="navbar">
+<div class="header-icons">
+<i class="fas fa-search"></i>
+<i class="fas fa-user-circle"></i>
+</div>
+</header>
 
-    <div class="logo">
-      <i class="fas fa-microchip"></i>
-      <h2>TechNest</h2>
-    </div>
+<!-- CATEGORY BAR -->
+<div class="categories">
 
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Exchange</a></li>
-        <li><a href="#">Support</a></li>
-      </ul>
-    </nav>
+<button class="active" data-category="all">
+All
+</button>
 
-    <div class="nav-icons">
-      <i class="fas fa-search"></i>
+<button data-category="electronics">
+Electronics
+</button>
 
-      <div class="cart-box">
-        <i class="fas fa-shopping-cart"></i>
-        <span id="cart-count">0</span>
-      </div>
-    </div>
+<button data-category="furniture">
+Furniture
+</button>
 
-  </header>
+<button data-category="household">
+Household
+</button>
 
-  <!-- ================= HERO ================= -->
+</div>
+<div class="main-layout">
 
-  <section class="hero">
+    <aside class="sidebar">
 
-    <div class="hero-overlay"></div>
+        <h3>Categories</h3>
 
-    <div class="hero-content">
-      <h1>Premium Tech Marketplace</h1>
+        <button>All</button>
+        <button>Electronics</button>
+        <button>Furniture</button>
+        <button>Household</button>
 
-      <p>
-        Buy gadgets or exchange your old devices instantly.
-      </p>
+    </aside>
 
-      <button>Explore Products</button>
-    </div>
+    <main class="content">
 
-  </section>
+        <div class="products" id="products"></div>
 
-  <!-- ================= PRODUCTS ================= -->
+    </main>
 
-  <section class="products-section">
+    <aside class="rightbar">
 
-    <div class="section-title">
-      <h2>Featured Products</h2>
-      <p>Live products loaded from your Firebase backend</p>
-    </div>
+        <h3>Account</h3>
 
-    <!-- AUTO MOVING PRODUCTS -->
-    <div class="slider-wrapper">
+        <p>John Doe</p>
 
-      <div class="slider-track" id="products-container">
+        <h3>Notifications</h3>
 
-        <!-- Products loaded from JS -->
+        <div id="notifications"></div>
 
-      </div>
+    </aside>
 
-    </div>
+</div>
+<!-- PRODUCTS -->
+<div class="products" id="products">
 
-  </section>
+</div>
 
-  <!-- ================= NEWSLETTER ================= -->
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
 
-  <section class="newsletter">
+<button>
+<i class="fas fa-home"></i>
+<span>Home</span>
+</button>
 
-    <div class="newsletter-content">
+<button>
+<i class="fas fa-plus-circle"></i>
+<span>Add</span>
+</button>
 
-      <h2>Get Latest Tech Deals</h2>
+<button>
+<i class="fas fa-bell"></i>
+<span>Notifications</span>
+</button>
 
-      <p>
-        Subscribe for latest offers and exchange discounts
-      </p>
+</nav>
 
-    </div>
-
-    <div class="newsletter-form">
-
-      <input type="email" placeholder="Enter your email" />
-
-      <button>Subscribe</button>
-
-    </div>
-
-  </section>
-
-  <!-- ================= FOOTER ================= -->
-
-  <footer class="footer">
-
-    <div class="footer-box">
-      <h3>TechNest</h3>
-      <p>
-        Modern gadget marketplace powered by Firebase.
-      </p>
-    </div>
-
-    <div class="footer-box">
-      <h3>Quick Links</h3>
-
-      <a href="#">Home</a>
-      <a href="#">Products</a>
-      <a href="#">Support</a>
-    </div>
-
-    <div class="footer-box">
-      <h3>Follow Us</h3>
-
-      <div class="socials">
-        <i class="fab fa-facebook-f"></i>
-        <i class="fab fa-instagram"></i>
-        <i class="fab fa-x-twitter"></i>
-      </div>
-    </div>
-
-  </footer>
-
-  <!-- Firebase -->
-  <script type="module" src="script.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
