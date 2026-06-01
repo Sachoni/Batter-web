@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload Product</title>
+
+<style>
+body{
+    background:#e5e5e5;
+    font-family:Arial,sans-serif;
+}
+
+.container{
+    width:350px;
+    margin:20px auto;
+    background:#ff7f27;
+    padding:15px;
+}
+
+.back-btn{
+    background:#ffea00;
+    border-radius:12px;
+    padding:10px 20px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.form-group{
+    margin-top:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+input,select{
+    width:180px;
+    height:35px;
+}
+
+.upload-box{
+    margin:30px auto;
+    width:280px;
+    height:200px;
+    background:#eee;
+    border-radius:35px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    font-weight:bold;
+    cursor:pointer;
+    overflow:hidden;
+}
+
+.upload-box img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:none;
+}
+
+.actions{
+    display:flex;
+    justify-content:space-between;
+}
+
+.upload-btn{
+    background:#22c55e;
+    color:white;
+    border-radius:12px;
+    padding:12px 30px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.cancel-btn{
+    background:red;
+    color:white;
+    border-radius:12px;
+    padding:12px 30px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.status{
+    text-align:center;
+    margin-top:10px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+    <!-- HEADER -->
+<header class="header">
+<div class="logo">Home</div>
+
+<div class="header-icons">
+<i class="fas fa-search"></i>
+<i class="fas fa-user-circle"></i>
+</div>
+</header>
+
+<div class="container">
+
+<button class="back-btn" onclick="history.back()">Go Back</button>
+
+<div class="form-group">
+<label><b>Product Name:</b></label>
+<input type="text" id="productName">
+</div>
+
+<div class="form-group">
+<label><b>Category:</b></label>
+<select id="type">
+<option>Electronics</option>
+<option>Furniture</option>
+<option>Households</option>
+<option>Plants/Grocery</option>
+</select>
+</div>
+
+<div class="form-group">
+<label><b>Sell/Exchange:</b></label>
+<select id="type">
+<option>Sell</option>
+<option>Exchange</option>
+</select>
+</div>
+
+<div class="form-group">
+<label><b>Rate:</b></label>
+<input type="number" id="rate">
+</div>
+
+<div class="upload-box" onclick="document.getElementById('photo').click()">
+<span id="uploadText">Upload Product Photo</span>
+<img id="preview">
+<input type="file" id="photo" accept="image/*" hidden>
+</div>
+
+<div class="actions">
+<button class="upload-btn" onclick="uploadProduct()">Upload</button>
+<button class="cancel-btn" onclick="clearForm()">Cancel</button>
+</div>
+
+<div class="status" id="status"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getStorage,
+ref,
+uploadBytes,
+getDownloadURL
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+import {
+getAuth
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCe6zcYlkBlgcOllDlTreozApj24fQIdZY",
+  authDomain: "batter-53f91.firebaseapp.com",
+  projectId: "batter-53f91",
+  storageBucket: "batter-53f91.firebasestorage.app",
+  messagingSenderId: "825703034072",
+  appId: "1:825703034072:web:a416764346918e6da3bbad"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = getStorage(app);
+const auth = getAuth(app);
+
+let selectedFile = null;
+
+const photoInput = document.getElementById("photo");
+const preview = document.getElementById("preview");
+const uploadText = document.getElementById("uploadText");
+
+photoInput.addEventListener("change", (e)=>{
+selectedFile = e.target.files[0];
+
+if(selectedFile){
+preview.src = URL.createObjectURL(selectedFile);
+preview.style.display = "block";
+uploadText.style.display = "none";
+}
+});
+
+window.uploadProduct = async function(){
+
+const user = auth.currentUser;
+
+if(!user){
+alert("Please login first.");
+return;
+}
+
+const name = document.getElementById("productName").value;
+const category = document.getElementById("category").value;
+const type = document.getElementById("type").value;
+const rate = document.getElementById("rate").value;
+
+if(!name || !category || !rate || !selectedFile){
+alert("Fill all fields.");
+return;
+}
+
+try{
+
+document.getElementById("status").innerText =
+"Uploading...";
+
+const imageRef = ref(
+storage,
+`products/${Date.now()}_${selectedFile.name}`
+);
+
+await uploadBytes(imageRef, selectedFile);
+
+const imageUrl =
+await getDownloadURL(imageRef);
+
+await addDoc(
+collection(db,"products"),
+{
+productName:name,
+category:category,
+type:type,
+rate:Number(rate),
+image:imageUrl,
+userId:user.uid,
+userEmail:user.email,
+createdAt:serverTimestamp()
+}
+);
+
+document.getElementById("status").innerText =
+"Product Uploaded Successfully";
+
+clearForm();
+
+}catch(error){
+
+console.error(error);
+document.getElementById("status").innerText =
+error.message;
+
+}
+
+}
+
+window.clearForm = function(){
+
+document.getElementById("productName").value="";
+document.getElementById("category").value="";
+document.getElementById("rate").value="";
+
+preview.src="";
+preview.style.display="none";
+
+uploadText.style.display="block";
+
+selectedFile=null;
+
+document.getElementById("status").innerText="";
+
+}
+
+</script>
+
+</body>
+</html>

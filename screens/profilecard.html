@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Batter - Edit Profile</title>
+
+<style>
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+/* BODY */
+body{
+    background:#edce70;
+    min-height:100vh;
+}
+
+/* HEADER */
+.header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:60px;
+    background:#d4a017;
+    display:flex;
+    align-items:center;
+    padding:0 20px;
+    z-index:1000;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    color:white;
+}
+
+/* MAIN */
+.container{
+    width:100%;
+    max-width:450px;
+    margin:90px auto 30px;
+    padding:20px;
+    background:rgba(255,255,255,0.15);
+    border-radius:15px;
+}
+
+/* BACK BUTTON */
+.back-btn{
+    background:#ffea00;
+    border:none;
+    border-radius:10px;
+    padding:10px 15px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-bottom:20px;
+}
+
+/* ROW */
+.row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+label{
+    font-weight:bold;
+    color:white;
+}
+
+input{
+    flex:1;
+    min-width:180px;
+    height:40px;
+    padding:5px 10px;
+    border-radius:8px;
+    border:none;
+    outline:none;
+}
+
+/* BUTTONS */
+.buttons{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+button{
+    flex:1;
+    min-width:120px;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.edit-btn{
+    background:#22c55e;
+    color:white;
+}
+
+.save-btn{
+    background:#e11d48;
+    color:white;
+}
+
+/* ========================= */
+/* MODAL OVERLAY */
+/* ========================= */
+
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    opacity:0;
+    visibility:hidden;
+    transition:0.3s ease;
+}
+
+/* ACTIVE MODAL */
+.modal.active{
+    opacity:1;
+    visibility:visible;
+}
+
+/* MODAL BOX */
+.modal-content{
+    background:white;
+    width:90%;
+    max-width:350px;
+    padding:20px;
+    border-radius:15px;
+
+    transform:scale(0.7);
+    transition:0.3s ease;
+}
+
+/* SCALE ANIMATION */
+.modal.active .modal-content{
+    transform:scale(1);
+}
+
+.modal-content h3{
+    margin-bottom:15px;
+}
+
+.modal-content input{
+    width:100%;
+    height:40px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:5px 10px;
+}
+
+.modal-content button{
+    width:100%;
+    background:#22c55e;
+    color:white;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+
+    .container{
+        width:92%;
+    }
+
+    button{
+        min-width:100%;
+    }
+
+    input{
+        min-width:100%;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="logo">Batter</div>
+</div>
+
+<!-- MAIN -->
+<div class="container">
+
+<button class="back-btn" onclick="history.back()">← Go Back</button>
+
+<div class="row">
+<label>Name:</label>
+<input id="displayName" value="John Doe" readonly>
+</div>
+
+<div class="buttons">
+<button class="edit-btn" onclick="openModal()">Edit</button>
+<button class="save-btn" onclick="saveName()">Save</button>
+</div>
+
+</div>
+
+<!-- ========================= -->
+<!-- MODAL -->
+<!-- ========================= -->
+
+<div class="modal" id="modal" onclick="outsideClick(event)">
+
+    <div class="modal-content">
+
+        <h3>Edit Name</h3>
+
+        <input type="text" id="newName" placeholder="Enter new name">
+
+        <button onclick="updateName()">Update Name</button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* OPEN MODAL */
+function openModal(){
+    document.getElementById("modal").classList.add("active");
+}
+
+/* CLOSE MODAL */
+function closeModal(){
+    document.getElementById("modal").classList.remove("active");
+}
+
+/* CLOSE WHEN CLICK OUTSIDE */
+function outsideClick(e){
+    if(e.target.id === "modal"){
+        closeModal();
+    }
+}
+
+/* UPDATE NAME */
+function updateName(){
+
+    const name = document.getElementById("newName").value;
+
+    if(name.trim() === ""){
+        alert("Name cannot be empty!");
+        return;
+    }
+
+    document.getElementById("displayName").value = name;
+
+    localStorage.setItem("username", name);
+
+    closeModal();
+}
+
+/* SAVE NAME */
+function saveName(){
+
+    const name = document.getElementById("displayName").value;
+
+    if(name.trim() === ""){
+        alert("Cannot save empty name!");
+        return;
+    }
+
+    localStorage.setItem("username", name);
+
+    alert("Profile saved successfully!");
+}
+
+/* LOAD SAVED NAME */
+window.onload = function(){
+    const saved = localStorage.getItem("username");
+    if(saved){
+        document.getElementById("displayName").value = saved;
+    }
+}
+
+</script>
+
+</body>
+</html>

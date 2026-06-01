@@ -11,72 +11,190 @@
 rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 />
+
+<style>
+
+/* =========================
+   YOUTUBE STYLE SEARCH BAR
+========================= */
+
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 15px;
+    background:#fff;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+/* LOGO */
+.logo{
+    font-size:20px;
+    font-weight:bold;
+}
+
+/* SEARCH BAR */
+.search-container{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    margin:0 15px;
+}
+
+.search-box{
+    width:100%;
+    max-width:500px;
+    display:flex;
+    align-items:center;
+    border:1px solid #ccc;
+    border-radius:25px;
+    overflow:hidden;
+    background:#f9f9f9;
+}
+
+.search-box input{
+    flex:1;
+    border:none;
+    outline:none;
+    padding:10px 15px;
+    background:transparent;
+}
+
+.search-box button{
+    border:none;
+    background:#ddd;
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+/* RESULTS (still used from your original system) */
+#results p{
+    padding:8px;
+    border-bottom:1px solid #ddd;
+}
+
+/* HEADER ICONS */
+.header-icons{
+    display:flex;
+    gap:15px;
+    font-size:20px;
+}
+
+</style>
+
 </head>
 
 <body>
 
 <!-- HEADER -->
 <header class="header">
-<div class="logo">Batter</div>
 
-<div class="header-icons">
-<i class="fas fa-search"></i>
-<i class="fas fa-user-circle"></i>
+<div class="logo">Home</div>
+
+<!-- SEARCH BAR (YOUTUBE STYLE) -->
+<div class="search-container">
+
+    <div class="search-box">
+
+        <input 
+            type="text" 
+            id="searchInput"
+            placeholder="Search..."
+            onkeyup="searchItems()"
+        >
+
+        <button>
+            <i class="fas fa-search"></i>
+        </button>
+
+    </div>
+
 </div>
+
+<!-- ICONS -->
+<div class="header-icons">
+
+    <a href="profilecard.html">
+        <i class="fas fa-user-circle"></i>
+    </a>
+
+</div>
+
 </header>
 
 <!-- CATEGORY BAR -->
 <div class="categories">
 
-<button class="active" data-category="all">
-All
-</button>
-
-<button data-category="electronics">
-Electronics
-</button>
-
-<button data-category="furniture">
-Furniture
-</button>
-
-<button data-category="household">
-Household
-</button>
+<button class="active" data-category="all">All</button>
+<button data-category="electronics">Electronics</button>
+<button data-category="furniture">Furniture</button>
+<button data-category="household">Household</button>
 
 </div>
+
 <div class="main-layout">
     <main class="content">
-
         <div class="products" id="products"></div>
-
     </main>
-<!-- PRODUCTS -->
-<div class="products" id="products">
 
+<!-- PRODUCTS -->
+<div class="products" id="products"></div>
+
+<!-- SEARCH RESULTS (UNCHANGED) -->
+<div id="results" style="display:none;">
+    <p>Apple</p>
+    <p>Banana</p>
+    <p>Orange</p>
+    <p>Mango</p>
+    <p>Grapes</p>
 </div>
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
 
-<button>
-<i class="fas fa-home"></i>
-<span>Home</span>
-</button>
+  <a href="market.html" class="nav-button">
+    <i class="fas fa-home"></i>
+    <span>.</span>
+  </a>
 
-<button>
-<i class="fas fa-plus-circle"></i>
-<span>Add</span>
-</button>
+  <a href="uploadscreen.html" class="nav-button">
+    <i class="fas fa-plus-circle"></i>
+    <span>.</span>
+  </a>
 
-<button>
-<i class="fas fa-bell"></i>
-<span>Notifications</span>
-</button>
+  <a href="notifications.html" class="nav-button">
+    <i class="fas fa-bell"></i>
+    <span>.</span>
+  </a>
 
 </nav>
 
 <script src="app.js"></script>
+
+<script>
+
+/* LIVE SEARCH (UNCHANGED LOGIC) */
+function searchItems(){
+
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let items = document.querySelectorAll("#results p");
+
+    items.forEach(item => {
+
+        let text = item.textContent.toLowerCase();
+
+        if(text.includes(input)){
+            item.style.display = "block";
+        } else {
+            item.style.display = "none";
+        }
+
+    });
+}
+
+</script>
 
 </body>
 </html>

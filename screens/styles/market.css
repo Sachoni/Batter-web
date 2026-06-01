@@ -19,7 +19,7 @@ body{
     left:0;
     width:100%;
     height:65px;
-    background:#ff7b1f;
+    background:#d4a017;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -30,7 +30,13 @@ body{
 .logo{
 font-size:22px;
 font-weight:bold;
-color:white;
+color:#d4a017;
+}
+
+.logos{
+font-size:22px;
+font-weight:bold;
+color:#fff;
 }
 
 .header-icons{
@@ -126,7 +132,7 @@ cursor:pointer;
 .exchange-btn{
 width:100%;
 padding:10px;
-background:#ff9800;
+background:#d4a017;
 color:white;
 border:none;
 border-radius:6px;
@@ -144,7 +150,7 @@ transform:translateX(-50%);
 width:100%;
 max-width:430px;
 
-background:#ff7b1f;
+background:#d4a017;
 
 display:flex;
 justify-content:space-around;
