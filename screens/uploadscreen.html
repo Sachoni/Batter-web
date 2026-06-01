@@ -102,7 +102,6 @@ input,select{
 <input type="text" id="productName">
 </div>
 
-<!-- FIXED ID -->
 <div class="form-group">
 <label><b>Category:</b></label>
 <select id="category">
@@ -113,7 +112,6 @@ input,select{
 </select>
 </div>
 
-<!-- FIXED ID (was duplicate before) -->
 <div class="form-group">
 <label><b>Sell/Exchange:</b></label>
 <select id="type">
@@ -147,10 +145,6 @@ input,select{
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import { getStorage, ref, uploadBytes, getDownloadURL }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
 import { getAuth } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -166,7 +160,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
 const auth = getAuth(app);
 
 let selectedFile = null;
@@ -206,17 +199,34 @@ return;
 
 try{
 
-document.getElementById("status").innerText = "Uploading...";
+document.getElementById("status").innerText =
+"Uploading image...";
 
-const imageRef = ref(
-storage,
-`products/${Date.now()}_${selectedFile.name}`
+// CLOUDINARY UPLOAD
+const formData = new FormData();
+formData.append("file", selectedFile);
+formData.append("upload_preset", "batter");
+
+const res = await fetch(
+"https://api.cloudinary.com/v1_1/dcrxu28k3/image/upload",
+{
+method: "POST",
+body: formData
+}
 );
 
-await uploadBytes(imageRef, selectedFile);
+const data = await res.json();
 
-const imageUrl = await getDownloadURL(imageRef);
+if(!data.secure_url){
+throw new Error("Image upload failed");
+}
 
+const imageUrl = data.secure_url;
+
+document.getElementById("status").innerText =
+"Saving product...";
+
+// SAVE TO FIRESTORE
 await addDoc(collection(db,"products"),{
 productName:name,
 category:category,
@@ -230,13 +240,14 @@ createdAt:serverTimestamp()
 });
 
 document.getElementById("status").innerText =
-"Product Uploaded Successfully";
+"Product Uploaded Successfully ✔";
 
 clearForm();
 
 }catch(error){
 console.error(error);
-document.getElementById("status").innerText = error.message;
+document.getElementById("status").innerText =
+error.message;
 }
 
 }
