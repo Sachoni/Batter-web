@@ -92,15 +92,6 @@ input,select{
 </head>
 
 <body>
-    <!-- HEADER -->
-<header class="header">
-<div class="logo">Home</div>
-
-<div class="header-icons">
-<i class="fas fa-search"></i>
-<i class="fas fa-user-circle"></i>
-</div>
-</header>
 
 <div class="container">
 
@@ -111,9 +102,10 @@ input,select{
 <input type="text" id="productName">
 </div>
 
+<!-- FIXED ID -->
 <div class="form-group">
 <label><b>Category:</b></label>
-<select id="type">
+<select id="category">
 <option>Electronics</option>
 <option>Furniture</option>
 <option>Households</option>
@@ -121,6 +113,7 @@ input,select{
 </select>
 </div>
 
+<!-- FIXED ID (was duplicate before) -->
 <div class="form-group">
 <label><b>Sell/Exchange:</b></label>
 <select id="type">
@@ -152,35 +145,23 @@ input,select{
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-getFirestore,
-collection,
-addDoc,
-serverTimestamp
-}
+import { getFirestore, collection, addDoc, serverTimestamp } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-getStorage,
-ref,
-uploadBytes,
-getDownloadURL
-}
+import { getStorage, ref, uploadBytes, getDownloadURL }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-import {
-getAuth
-}
+import { getAuth } 
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-apiKey: "AIzaSyCe6zcYlkBlgcOllDlTreozApj24fQIdZY",
+  apiKey: "AIzaSyCe6zcYlkBlgcOllDlTreozApj24fQIdZY",
   authDomain: "batter-53f91.firebaseapp.com",
   projectId: "batter-53f91",
-  storageBucket: "batter-53f91.firebasestorage.app",
+  storageBucket: "batter-53f91.appspot.com",
   messagingSenderId: "825703034072",
-  appId: "1:825703034072:web:a416764346918e6da3bbad"
+  appId: "1:825703034072:web:a416764346918e6da3bbad",
+  measurementId: "G-VT7NVLXXYZ"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -218,15 +199,14 @@ const category = document.getElementById("category").value;
 const type = document.getElementById("type").value;
 const rate = document.getElementById("rate").value;
 
-if(!name || !category || !rate || !selectedFile){
+if(!name || !category || !type || !rate || !selectedFile){
 alert("Fill all fields.");
 return;
 }
 
 try{
 
-document.getElementById("status").innerText =
-"Uploading...";
+document.getElementById("status").innerText = "Uploading...";
 
 const imageRef = ref(
 storage,
@@ -235,12 +215,9 @@ storage,
 
 await uploadBytes(imageRef, selectedFile);
 
-const imageUrl =
-await getDownloadURL(imageRef);
+const imageUrl = await getDownloadURL(imageRef);
 
-await addDoc(
-collection(db,"products"),
-{
+await addDoc(collection(db,"products"),{
 productName:name,
 category:category,
 type:type,
@@ -248,9 +225,9 @@ rate:Number(rate),
 image:imageUrl,
 userId:user.uid,
 userEmail:user.email,
+status:"online",
 createdAt:serverTimestamp()
-}
-);
+});
 
 document.getElementById("status").innerText =
 "Product Uploaded Successfully";
@@ -258,30 +235,24 @@ document.getElementById("status").innerText =
 clearForm();
 
 }catch(error){
-
 console.error(error);
-document.getElementById("status").innerText =
-error.message;
-
+document.getElementById("status").innerText = error.message;
 }
 
 }
 
 window.clearForm = function(){
-
 document.getElementById("productName").value="";
-document.getElementById("category").value="";
+document.getElementById("category").selectedIndex=0;
+document.getElementById("type").selectedIndex=0;
 document.getElementById("rate").value="";
 
 preview.src="";
 preview.style.display="none";
-
 uploadText.style.display="block";
 
 selectedFile=null;
-
 document.getElementById("status").innerText="";
-
 }
 
 </script>
