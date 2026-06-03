@@ -5,49 +5,340 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Batter</title>
 
-<link rel="stylesheet" href="styles/market.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-/>
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f5f5f5;
+    font-family:Arial, sans-serif;
+    padding-bottom:80px;
+}
+
+/* HEADER */
+
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 15px;
+    background:#fff;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 2px 5px rgba(0,0,0,0.08);
+}
+
+.logo{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.search-container{
+    flex:1;
+    margin:0 15px;
+}
+
+.search-box{
+    display:flex;
+    align-items:center;
+    background:#f0f2f5;
+    border-radius:25px;
+    overflow:hidden;
+}
+
+.search-box input{
+    flex:1;
+    border:none;
+    outline:none;
+    background:transparent;
+    padding:12px 15px;
+    font-size:15px;
+}
+
+.search-box button{
+    border:none;
+    background:transparent;
+    padding:12px 15px;
+    cursor:pointer;
+    color:#666;
+    font-size:16px;
+}
+
+.header-icons{
+    font-size:24px;
+}
+
+.header-icons a{
+    color:#333;
+    text-decoration:none;
+}
+
+/* PINTEREST GRID */
+
+.products{
+    column-count:2;
+    column-gap:15px;
+    padding:15px;
+    max-width:1600px;
+    margin:auto;
+}
+
+.product-card{
+    display:inline-block;
+    width:100%;
+    margin-bottom:15px;
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    break-inside:avoid;
+}
+
+.product-card img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+.product-info{
+    padding:10px;
+}
+
+.product-info h4{
+    margin-bottom:6px;
+}
+
+.price{
+    color:green;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.buy-btn{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:#22c55e;
+    color:white;
+    cursor:pointer;
+}
+
+/* TABLET */
+
+@media (min-width:768px){
+    .products{
+        column-count:3;
+    }
+}
+
+/* LAPTOP */
+
+@media (min-width:1024px){
+    .products{
+        column-count:4;
+    }
+}
+
+/* LARGE DESKTOP */
+
+@media (min-width:1400px){
+    .products{
+        column-count:5;
+    }
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:65px;
+    background:#fff;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    border-top:1px solid #ddd;
+    z-index:9999;
+}
+
+.bottom-nav a{
+    color:#333;
+    text-decoration:none;
+    font-size:24px;
+    transition:0.2s;
+}
+
+.bottom-nav a:hover{
+    transform:scale(1.1);
+}
+
+/* LOADING */
+
+.loading{
+    text-align:center;
+    padding:50px;
+    font-size:18px;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header class="header">
-<div class="logos">Notifications</div>
+
+<div class="logo">Notifications</div>
+
+<div class="search-container">
+    <div class="search-box">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search products..."
+        >
+        <button>
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+</div>
 
 <div class="header-icons">
-<i class="fas fa-search"></i>
+    <a href="profilecard.html">
+        <i class="fas fa-user-circle"></i>
+    </a>
 </div>
+
 </header>
-<div class="main-layout">
-    <main class="content">
 
-    </main>
+<!-- PRODUCTS -->
+
+<div class="products" id="products">
+
+    <div class="loading">
+        Loading Notifications...
+    </div>
+
+</div>
+
 <!-- BOTTOM NAV -->
+
 <nav class="bottom-nav">
+    <a href="market.html">
+        <i class="fas fa-home"></i>
+    </a>
 
-  <a href="market.html" class="nav-button">
-    <i class="fas fa-home"></i>
-    <span>.</span>
-  </a>
+    <a href="uploadscreen.html">
+        <i class="fas fa-plus-circle"></i>
+    </a>
 
-  <a href="uploadscreen.html" class="nav-button">
-    <i class="fas fa-plus-circle"></i>
-    <span>.</span>
-  </a>
-
-  <a href="notifications.html" class="nav-button">
-    <i class="fas fa-bell"></i>
-    <span>.</span>
-  </a>
-
+    <a href="notifications.html">
+        <i class="fas fa-bell"></i>
+    </a>
 </nav>
 
-<script src="app.js"></script>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    getDocs
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* FIREBASE */
+const firebaseConfig = {
+    apiKey: "AIzaSyCe6zcYlkBlgcOllDlTreozApj24fQIdZY",
+    authDomain: "batter-53f91.firebaseapp.com",
+    projectId: "batter-53f91",
+    storageBucket: "batter-53f91.appspot.com",
+    messagingSenderId: "825703034072",
+    appId: "1:825703034072:web:a416764346918e6da3bbad"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const box = document.getElementById("products");
+
+/* LOAD NOTIFICATIONS */
+async function loadNotifications(){
+
+    box.innerHTML = `
+        <div class="loading">
+            Loading Notifications...
+        </div>
+    `;
+
+    const snapshot = await getDocs(
+        collection(db,"notifications")
+    );
+
+    box.innerHTML = "";
+
+    if(snapshot.empty){
+        box.innerHTML = `
+            <div class="loading">
+                No notifications yet
+            </div>
+        `;
+        return;
+    }
+
+    snapshot.forEach((doc)=>{
+
+        const data = doc.data();
+
+        const typeColor =
+            data.type === "success" ? "#22c55e" :
+            data.type === "error" ? "#ef4444" :
+            "#3b82f6";
+
+        const card = `
+        <div class="product-card" style="padding:15px;">
+
+            <div style="
+                width:10px;
+                height:10px;
+                background:${typeColor};
+                border-radius:50%;
+                margin-bottom:10px;
+            "></div>
+
+            <h4 style="margin-bottom:8px;">
+                ${data.message}
+            </h4>
+
+            <p style="color:#666;font-size:13px;">
+                ${data.time || "No date"}
+            </p>
+
+        </div>
+        `;
+
+        box.insertAdjacentHTML("beforeend", card);
+
+    });
+}
+
+loadNotifications();
+
+</script>
 
 </body>
 </html>

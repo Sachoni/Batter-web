@@ -114,10 +114,7 @@ button{
     color:white;
 }
 
-/* ========================= */
-/* MODAL OVERLAY */
-/* ========================= */
-
+/* MODAL */
 .modal{
     position:fixed;
     top:0;
@@ -125,35 +122,29 @@ button{
     width:100%;
     height:100%;
     background:rgba(0,0,0,0.5);
-
     display:flex;
     justify-content:center;
     align-items:center;
-
     opacity:0;
     visibility:hidden;
     transition:0.3s ease;
 }
 
-/* ACTIVE MODAL */
 .modal.active{
     opacity:1;
     visibility:visible;
 }
 
-/* MODAL BOX */
 .modal-content{
     background:white;
     width:90%;
     max-width:350px;
     padding:20px;
     border-radius:15px;
-
     transform:scale(0.7);
     transition:0.3s ease;
 }
 
-/* SCALE ANIMATION */
 .modal.active .modal-content{
     transform:scale(1);
 }
@@ -184,18 +175,9 @@ button{
 
 /* RESPONSIVE */
 @media(max-width:600px){
-
-    .container{
-        width:92%;
-    }
-
-    button{
-        min-width:100%;
-    }
-
-    input{
-        min-width:100%;
-    }
+    .container{ width:92%; }
+    button{ min-width:100%; }
+    input{ min-width:100%; }
 }
 
 </style>
@@ -203,19 +185,17 @@ button{
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
     <div class="logo">Batter</div>
 </div>
 
-<!-- MAIN -->
 <div class="container">
 
 <button class="back-btn" onclick="history.back()">← Go Back</button>
 
 <div class="row">
 <label>Name:</label>
-<input id="displayName" value="John Doe" readonly>
+<input id="displayName" value="" readonly>
 </div>
 
 <div class="buttons">
@@ -225,45 +205,84 @@ button{
 
 </div>
 
-<!-- ========================= -->
 <!-- MODAL -->
-<!-- ========================= -->
-
 <div class="modal" id="modal" onclick="outsideClick(event)">
-
     <div class="modal-content">
-
         <h3>Edit Name</h3>
-
         <input type="text" id="newName" placeholder="Enter new name">
-
         <button onclick="updateName()">Update Name</button>
-
     </div>
-
 </div>
 
-<script>
+<script type="module">
+
+/* FIREBASE IMPORTS */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyCe6zcYlkBlgcOllDlTreozApj24fQIdZY",
+  authDomain: "batter-53f91.firebaseapp.com",
+  projectId: "batter-53f91",
+  storageBucket: "batter-53f91.firebasestorage.app",
+  messagingSenderId: "825703034072",
+  appId: "1:825703034072:web:a416764346918e6da3bbad"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+let userId = null;
+
+/* AUTH CHECK */
+onAuthStateChanged(auth, async (user) => {
+
+    if(user){
+        userId = user.uid;
+
+        const ref = doc(db, "users", userId);
+        const snap = await getDoc(ref);
+
+        if(snap.exists()){
+            document.getElementById("displayName").value =
+            snap.data().username || "";
+        }
+    }
+
+});
 
 /* OPEN MODAL */
-function openModal(){
+window.openModal = function(){
     document.getElementById("modal").classList.add("active");
-}
+};
 
 /* CLOSE MODAL */
-function closeModal(){
+window.closeModal = function(){
     document.getElementById("modal").classList.remove("active");
-}
+};
 
-/* CLOSE WHEN CLICK OUTSIDE */
-function outsideClick(e){
+/* OUTSIDE CLICK */
+window.outsideClick = function(e){
     if(e.target.id === "modal"){
         closeModal();
     }
-}
+};
 
-/* UPDATE NAME */
-function updateName(){
+/* UPDATE NAME (MODAL) */
+window.updateName = async function(){
 
     const name = document.getElementById("newName").value;
 
@@ -274,13 +293,21 @@ function updateName(){
 
     document.getElementById("displayName").value = name;
 
-    localStorage.setItem("username", name);
+    if(!userId){
+        alert("User not logged in!");
+        return;
+    }
+
+    await setDoc(doc(db,"users",userId),{
+        username: name
+    }, { merge:true });
 
     closeModal();
-}
+    alert("Name updated!");
+};
 
-/* SAVE NAME */
-function saveName(){
+/* SAVE BUTTON */
+window.saveName = async function(){
 
     const name = document.getElementById("displayName").value;
 
@@ -289,18 +316,17 @@ function saveName(){
         return;
     }
 
-    localStorage.setItem("username", name);
-
-    alert("Profile saved successfully!");
-}
-
-/* LOAD SAVED NAME */
-window.onload = function(){
-    const saved = localStorage.getItem("username");
-    if(saved){
-        document.getElementById("displayName").value = saved;
+    if(!userId){
+        alert("User not logged in!");
+        return;
     }
-}
+
+    await updateDoc(doc(db,"users",userId),{
+        username: name
+    });
+
+    alert("Profile saved to database!");
+};
 
 </script>
 
